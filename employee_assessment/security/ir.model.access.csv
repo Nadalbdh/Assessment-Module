@@ -1,0 +1,22 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+assessor_access,Assessor Access,model_assessment_assessor,group_assessor,1,0,0,0
+award_access,award Access,model_assessment_award,group_assessor,1,0,0,0
+award_comment_access,award Comment Access,model_assessment_awardcomment,group_assessor,1,1,1,1
+stgoal_access,Strategic Goal Access,model_assessment_stgoal,group_assessor,1,0,0,0
+stgoal_comment_access,Strategic Goal Comment Access,model_assessment_stgoalcomment,group_assessor,1,1,1,1
+opgoal_access,Operational Goal Access,model_assessment_opgoal,group_assessor,1,0,0,0
+opgoal_comment_access,Operational Goal Comment Access,model_assessment_opgoalcomment,group_assessor,1,1,1,1
+indicator_access,Performance Indicator Access,model_assessment_indicator,group_assessor,1,0,0,0
+indicator_comment_access,Performance Indicator Comment Access,model_assessment_indicatorcomment,group_assessor,1,1,1,1
+measure_access,Measure Component Access,model_assessment_measure,group_assessor,1,0,0,0
+period_access, Period Access,model_assessment_measure,group_assessor, 1,0,0,0
+project_access,Project Access,project.model_project_project,group_assessor,1,0,0,0
+project_comment_access,Project Comment Access,model_assessment_projectcomment,group_assessor,1,1,1,1
+task_access,Task Access,project.model_project_task,group_assessor,1,0,0,0
+ptask_comment_access,task Comment Access,model_assessment_taskcomment,group_assessor,1,1,1,1
+relation_access,Strategic Relation Access,model_assessment_relation,group_assessor,1,0,0,0
+success_access,Success Factor Access,model_assessment_success,group_assessor,1,0,0,0
+stgoal_risk_access,Strategic Goal Risk Access,model_assessment_stgoalrisk,group_assessor,1,0,0,0
+opgoal_risk_access,Operational Goal Risk Access,model_assessment_opgoalrisk,group_assessor,1,0,0,0
+indicator_risk_access,Performance Indicator Risk Access,model_assessment_indicatorrisk,group_assessor,1,0,0,0
+project_risk_access,Project Risk Access,model_assessment_projectrisk,group_assessor,1,0,0,0

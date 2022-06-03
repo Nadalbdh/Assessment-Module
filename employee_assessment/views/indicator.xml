@@ -1,0 +1,198 @@
+<odoo>
+    <data>
+
+        <record id="indicator_list_action" model="ir.actions.act_window">
+            <field name="name">Performance Indicators</field>
+            <field name="res_model">assessment.indicator</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form,pivot,graph</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add a new indicator.
+                </p>
+            </field>
+        </record>
+        <record id="measure_component_list_action" model="ir.actions.act_window">
+            <field name="name">Measure Components</field>
+            <field name="res_model">assessment.measure</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'default_indicator_id': active_id, 'search_default_indicator_id': [active_id]}</field>
+        </record>
+
+        <record id="indicator_form" model="ir.ui.view">
+            <field name="name">indicator_form</field>
+            <field name="model">assessment.indicator</field>
+            <field name="arch" type="xml">
+                <form string="Performance Indicators">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" groups="hr.group_hr_user"
+                                    class="oe_stat_button" icon="fa-archive">
+                                <field name="indicatorActive" widget="boolean_button"
+                                       options='{"terminology": "archive"}'/>
+                            </button>
+                            <button name="%(measure_component_list_action)d" type="action" groups="hr.group_hr_user"
+                                    class="oe_stat_button" icon="fa-list"  >
+                                <field name="measure_count" string="Components" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h4><field name="seq" class="oe_inline" readonly="1"/></h4>
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="Indicator's Name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="operationalGoal" string="Operational Goal"/>
+                                <field name="indicatorImportance" string="Importance"/>
+                            </group>
+                            <group>
+                                <field name="create_uid" string="Created by" readonly="1"/>
+                                <field name="indicatorResponsibleEmployee" string="Responsible Employee"/>
+                            </group>
+                            <group>
+                                <field name="progress" widget="progressbar"/>
+                            </group>
+                        </group>
+                        <notebook colspan="4">
+                            <page string="Description">
+                                <group>
+                                    <field name="indicatorDescription" string="Description" colspan="4"/>
+                                </group>
+                            </page>
+                            <page string="Risks">
+                                <group>
+                                    <field name="risks">
+                                        <tree editable="bottom">
+                                            <field name="name"/>
+                                            <field name="description"/>
+                                            <field name="risk_degree"/>
+                                            <field name="risk_potential"/>
+                                            <field name="risk_priority"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page name="Comments" string="Comments">
+                                <field name="comments">
+                                    <tree editable="bottom">
+                                        <field name="name" string="Name"/>
+                                        <field name="comment_body" string="Description"/>
+                                        <field name="comment_date" string="Date"/>
+                                        <field name="create_uid" string="Created by" readonly="1"/>
+                                        <field name="done" string="Done"/>
+                                        <button name="%(enhancement_task_action)d" type="action" icon="fa-plus-circle" help="Create a new enhancement task"></button>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="indicator_kanban">
+            <field name="name">indicator_kanban</field>
+            <field name="model">assessment.indicator</field>
+            <field name="arch" type="xml">
+                <kanban class="o_assessment_kanban_view">
+                    <field name="name"/>
+                    <field name="seq"/>
+                    <field name="operationalGoal"/>
+                    <field name="measure_count"/>
+                    <field name="comment_count"/>
+                    <field name="color"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
+                                <!--         <div class="o_event_left">Expires on:
+                                             <div class="o_day"><t t-esc="record.date_to.raw_value.getDate()"/></div>
+                                             <div>
+                                                 <t t-esc="moment(record.date_to.raw_value).format('MMM')"/>
+                                                 <t t-esc="record.date_to.raw_value.getFullYear()"/>
+                                             </div>
+                                             <div><t t-esc="moment(record.date_to.raw_value).format('LT')"/></div>
+                                         </div>-->
+                                <div class="o_event_right">
+                                    <h4><field name="seq"/></h4>
+                                    <h2><field name="name"/></h2>
+                                    <b><field name="operationalGoal"/></b> <br/>
+                                    <p>
+                                        <a name="%(indicator_list_action2)d" type="action">
+                                            <t t-esc="record.measure_count.raw_value"> <i class="fa fa-bar-chart-o"/></t>
+                                        </a>
+                                        <a name="%(indicator_comment_list_action)d" type="action">
+                                            <t t-esc="record.comment_count.raw_value">  <i class="fa fa-comments"/></t>
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="indicator_graph">
+            <field name="name">indicator graph</field>
+            <field name="model">assessment.indicator</field>
+            <field name="arch" type="xml">
+                <graph string="Performance Indicators">
+                    <field name="name"></field>
+                    <field name="progress" type="measure"></field>
+                </graph>
+            </field>
+        </record>
+
+        <record id="view_assessment_indicator_pivot" model="ir.ui.view">
+            <field name="name">indicator pivot</field>
+            <field name="model">assessment.indicator</field>
+            <field name="arch" type="xml">
+                <pivot string="Performance Indicators Analysis" display_quantity="true" disable_linking="True">
+                    <field name="progress" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="indicator_tree" model="ir.ui.view">
+            <field name="name">indicator_tree</field>
+            <field name="model">assessment.indicator</field>
+            <field name="arch" type="xml">
+                <tree string="Performance Indicators">
+                    <field name="seq" string="Sequence"/>
+                    <field name="name" string="Name"/>
+                    <field name="indicatorResponsibleEmployee" string="Responsible Employee"/>
+                    <field name="state" string="Status"/>
+                    <field name="indicatorImportance" string="Importance"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="indicator_search" model="ir.ui.view">
+            <field name="name">indicator_search</field>
+            <field name="model">assessment.indicator</field>
+            <field name="arch" type="xml">
+                <search string="Performance Indicators">
+                    <field name="name" string="Performance Indicators' Names" filter_domain="['|',('name','ilike',self),('name','ilike',self)]"/>
+                    <field name="operationalGoal" string="Operational Goals" filter_domain="['|',('operationalGoal','ilike',self),('operationalGoal','ilike',self)]"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="indicator_seq" model="ir.sequence">
+            <field name="name">indicator Sequence</field>
+            <field name="code">assessment.indicator.seq</field>
+            <field name="prefix">/I-</field>
+            <field name="implementation">no_gap</field>
+        </record>
+
+        <menuitem id="indicator_big_menu" name="Performance Indicators" parent="main_emp_assessment_menu" sequence="14"/>
+        <menuitem id="indicator_menu" name="Performance Indicators" parent="indicator_big_menu" action="indicator_list_action"/>
+        <menuitem id="indicator_comment_menu" name="Comments" parent="indicator_big_menu" action="indicator_comment_list_action"/>
+
+    </data>
+</odoo>

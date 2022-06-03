@@ -1,0 +1,414 @@
+<odoo>
+    <data>
+        <!-- award COMMENTS -->
+
+        <record id="award_comment_list_action" model="ir.actions.act_window">
+            <field name="name">Comments</field>
+            <field name="res_model">assessment.awardcomment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add a new comment.
+                </p>
+            </field>
+        </record>
+
+        <record id="award_comment_form" model="ir.ui.view">
+            <field name="name">comment_form</field>
+            <field name="model">assessment.awardcomment</field>
+            <field name="arch" type="xml">
+                <form string="Comment">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" string="Name"/>
+                                <field name="done" string="Done"/>
+                                <field name="comment_date" string="Date"/>
+                            </group>
+                            <group>
+                                <field name="award" string="award"/>
+                                <field name="create_uid" string="Created by" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="comment_body" placeholder="Write a comment" widget="html"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="award_comment_tree" model="ir.ui.view">
+            <field name="name">comment_tree</field>
+            <field name="model">assessment.awardcomment</field>
+            <field name="arch" type="xml">
+                <tree string="Comments">
+                    <field name="name" string="Name"/>
+                    <field name="award" string="award"/>
+                    <field name="comment_date" string="Date"/>
+                    <field name="done" string="Done"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="award_comment_search" model="ir.ui.view">
+            <field name="name">comment_search</field>
+            <field name="model">assessment.awardcomment</field>
+            <field name="arch" type="xml">
+                <search string="Comments">
+                    <field name="award" string="awards" filter_domain="['|',('award','ilike',self),('award','ilike',self)]"/>
+                    <field name="name" string="Name" filter_domain="['|',('name','ilike',self),('name','ilike',self)]"/>
+                </search>
+            </field>
+        </record>
+
+        <menuitem id="award_comment_menu" name="Comments" parent="award_big_menu" action="award_comment_list_action"/>
+
+        <!-- STRATEGIC GOAL COMMENTS -->
+
+        <record id="stgoal_comment_list_action" model="ir.actions.act_window">
+            <field name="name">Comments</field>
+            <field name="res_model">assessment.stgoalcomment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add a new comment.
+                </p>
+            </field>
+        </record>
+
+        <record id="stgoal_comment_form" model="ir.ui.view">
+            <field name="name">comment_form</field>
+            <field name="model">assessment.stgoalcomment</field>
+            <field name="arch" type="xml">
+                <form string="Comment">
+                    <sheet>
+                        <group>
+                        <group>
+                            <field name="name" string="Name"/>
+                            <field name="done" string="Done"/>
+                            <field name="comment_date" string="Date"/>
+                        </group>
+                        <group>
+                            <field name="strategicGoal" string="Strategic Goal"/>
+                            <field name="create_uid" string="Created by" readonly="1"/>
+                        </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="comment_body" placeholder="Write a comment" widget="html"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="stgoal_comment_tree" model="ir.ui.view">
+            <field name="name">comment_tree</field>
+            <field name="model">assessment.stgoalcomment</field>
+            <field name="arch" type="xml">
+                <tree string="Comments">
+                    <field name="name" string="Name"/>
+                    <field name="strategicGoal" string="Strategic Goal"/>
+                    <field name="comment_date" string="Date"/>
+                    <field name="done" string="Done"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="stgoal_comment_search" model="ir.ui.view">
+            <field name="name">comment_search</field>
+            <field name="model">assessment.stgoalcomment</field>
+            <field name="arch" type="xml">
+                <search string="Comments">
+                    <field name="strategicGoal" string="Strategic Goal"
+                           filter_domain="['|',('strategicGoal','ilike',self),('strategicGoal','ilike',self)]"/>
+                    <field name="name" string="Name"
+                           filter_domain="['|',('name','ilike',self),('name','ilike',self)]"/>
+                </search>
+            </field>
+        </record>
+
+        <menuitem id="stgoal_comment_menu" name="Comments" parent="strategic_goal_big_menu" action="stgoal_comment_list_action"/>
+
+        <!-- OPERATIONAL GOAL COMMENTS -->
+
+        <record id="opgoal_comment_form" model="ir.ui.view">
+            <field name="name">comment_form</field>
+            <field name="model">assessment.opgoalcomment</field>
+            <field name="arch" type="xml">
+                <form string="Comment">
+                    <sheet>
+                        <group>
+                        <group>
+                            <field name="name" string="Name" colspan="2"/>
+                            <field name="done" string="Done" colspan="2"/>
+                            <field name="comment_date" string="Date" colspan="2"/>
+                        </group>
+                        <group>
+                            <field name="operationalGoal" string="Operational Goal" colspan="2"/>
+                            <field name="create_uid" string="Created by" readonly="1"/>
+                        </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="comment_body" placeholder="Write a comment" widget="html"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="opgoal_comment_tree" model="ir.ui.view">
+            <field name="name">comment_tree</field>
+            <field name="model">assessment.opgoalcomment</field>
+            <field name="arch" type="xml">
+                <tree string="Comments">
+                    <field name="name" string="Name"/>
+                    <field name="operationalGoal" string="Operational Goal"/>
+                    <field name="comment_date" string="Date"/>
+                    <field name="done" string="Done"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="opgoal_comment_search" model="ir.ui.view">
+            <field name="name">comment_search</field>
+            <field name="model">assessment.opgoalcomment</field>
+            <field name="arch" type="xml">
+                <search string="Comments">
+                    <field name="operationalGoal" string="Operational Goal"
+                           filter_domain="['|',('operationalGoal','ilike',self),('operationalGoal','ilike',self)]"/>
+                    <field name="name" string="Name"
+                           filter_domain="['|',('name','ilike',self),('name','ilike',self)]"/>
+                </search>
+            </field>
+        </record>
+
+        <menuitem id="opgoal_comment_menu" name="Comments" parent="operational_goal_big_menu" action="opgoal_comment_list_action"/>
+
+
+<!--         INDICATOR COMMENTS -->
+
+        <record id="indicator_comment_list_action" model="ir.actions.act_window">
+            <field name="name">Comments</field>
+            <field name="res_model">assessment.indicatorcomment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add a new comment.
+                </p>
+            </field>
+        </record>
+
+        <record id="indicator_comment_form" model="ir.ui.view">
+            <field name="name">comment_form</field>
+            <field name="model">assessment.indicatorcomment</field>
+            <field name="arch" type="xml">
+                <form string="Comment">
+                    <sheet>
+                        <group>
+                        <group>
+                            <field name="name" string="Name"/>
+                            <field name="done" string="Done"/>
+                            <field name="comment_date" string="Date"/>
+                        </group>
+                        <group>
+                            <field name="indicator" string="Indicator"/>
+                            <field name="create_uid" string="Created by" readonly="1"/>
+                        </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="comment_body" placeholder="Write a comment" widget="html"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="indicator_comment_tree" model="ir.ui.view">
+            <field name="name">comment_tree</field>
+            <field name="model">assessment.indicatorcomment</field>
+            <field name="arch" type="xml">
+                <tree string="Comments">
+                    <field name="name" string="Name"/>
+                    <field name="indicator" string="Indicator"/>
+                    <field name="comment_date" string="Date"/>
+                    <field name="done" string="Done"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="indicator_comment_search" model="ir.ui.view">
+            <field name="name">comment_search</field>
+            <field name="model">assessment.indicatorcomment</field>
+            <field name="arch" type="xml">
+                <search string="Comments">
+                    <field name="indicator" string="Performance Indicator"
+                           filter_domain="['|',('indicator','ilike',self),('indicator','ilike',self)]"/>
+                    <field name="name" string="Name"
+                           filter_domain="['|',('name','ilike',self),('name','ilike',self)]"/>
+                </search>
+            </field>
+        </record>
+
+        <!--         PROJECTS COMMENTS -->
+
+        <record id="project_comment_list_action" model="ir.actions.act_window">
+            <field name="name">Comments</field>
+            <field name="res_model">assessment.projectcomment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add a new comment.
+                </p>
+            </field>
+        </record>
+
+        <record id="project_comment_form" model="ir.ui.view">
+            <field name="name">comment_form</field>
+            <field name="model">assessment.projectcomment</field>
+            <field name="arch" type="xml">
+                <form string="Comment">
+                    <sheet>
+                        <group>
+                        <group>
+                            <field name="name" string="Name"/>
+                            <field name="done" string="Done"/>
+                            <field name="comment_date" string="Date"/>
+                        </group>
+                        <group>
+                            <field name="project" string="Project"/>
+                            <field name="create_uid" string="Created by" readonly="1"/>
+                        </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="comment_body" placeholder="Write a comment" widget="html"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="project_comment_tree" model="ir.ui.view">
+            <field name="name">comment_tree</field>
+            <field name="model">assessment.projectcomment</field>
+            <field name="arch" type="xml">
+                <tree string="Comments">
+                    <field name="name" string="Name"/>
+                    <field name="project" string="Project"/>
+                    <field name="comment_date" string="Date"/>
+                    <field name="done" string="Done"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="project_comment_search" model="ir.ui.view">
+            <field name="name">comment_search</field>
+            <field name="model">assessment.projectcomment</field>
+            <field name="arch" type="xml">
+                <search string="Comments">
+                    <field name="project" string="Project"
+                           filter_domain="['|',('project','ilike',self),('project','ilike',self)]"/>
+                    <field name="name" string="Name"
+                           filter_domain="['|',('name','ilike',self),('name','ilike',self)]"/>
+                </search>
+            </field>
+        </record>
+
+        <menuitem id="projects_comment_menu" name="Comments" parent="projects_big_menu" action="project_comment_list_action"/>
+
+
+<!--         TASKS COMMENTS -->
+
+        <record id="task_comment_list_action" model="ir.actions.act_window">
+            <field name="name">Comments</field>
+            <field name="res_model">assessment.taskcomment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add a new comment.
+                </p>
+            </field>
+        </record>
+
+        <record id="task_comment_form" model="ir.ui.view">
+            <field name="name">comment_form</field>
+            <field name="model">assessment.taskcomment</field>
+            <field name="arch" type="xml">
+                <form string="Comment">
+                    <sheet>
+                        <group>
+                        <group>
+                            <field name="name" string="Name"/>
+                            <field name="done" string="Done"/>
+                            <field name="comment_date" string="Date"/>
+                        </group>
+                        <group>
+                            <field name="relatedTask" string="Task"/>
+                            <field name="create_uid" string="Created by" readonly="1"/>
+                        </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="comment_body" placeholder="Write a comment" widget="html"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="task_comment_tree" model="ir.ui.view">
+            <field name="name">comment_tree</field>
+            <field name="model">assessment.taskcomment</field>
+            <field name="arch" type="xml">
+                <tree string="Comments">
+                    <field name="name" string="Name"/>
+                    <field name="relatedTask" string="Task"/>
+                    <field name="comment_date" string="Date"/>
+                    <field name="done" string="Done"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="task_comment_search" model="ir.ui.view">
+            <field name="name">comment_search</field>
+            <field name="model">assessment.taskcomment</field>
+            <field name="arch" type="xml">
+                <search string="Comments">
+                    <field name="relatedTask" string="Task"
+                           filter_domain="['|',('relatedTask','ilike',self),('relatedTask','ilike',self)]"/>
+                    <field name="name" string="Name"
+                           filter_domain="['|',('name','ilike',self),('name','ilike',self)]"/>
+                </search>
+            </field>
+        </record>
+
+        <menuitem id="tasks_comment_menu" name="Comments" parent="tasks_big_menu" action="task_comment_list_action"/>
+
+    </data>
+</odoo>

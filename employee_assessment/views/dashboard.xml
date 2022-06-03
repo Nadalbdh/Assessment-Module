@@ -1,0 +1,89 @@
+<odoo>
+
+    <record id="award_graph_action" model="ir.actions.act_window">
+        <field name="name">Awards</field>
+        <field name="res_model">assessment.award</field>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="award_graph"/>
+    </record>
+
+    <record id="stgoal_graph_action" model="ir.actions.act_window">
+        <field name="name">Strategic Goals</field>
+        <field name="res_model">assessment.stgoal</field>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="stgoal_graph"/>
+    </record>
+
+    <record id="opgoal_graph_action" model="ir.actions.act_window">
+        <field name="name">Operational Goals</field>
+        <field name="res_model">assessment.opgoal</field>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="opgoal_graph"/>
+    </record>
+
+    <record id="indicator_graph_action" model="ir.actions.act_window">
+        <field name="name">Performance Indicators</field>
+        <field name="res_model">assessment.indicator</field>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="indicator_graph"/>
+    </record>
+    <record id="task_graph_action" model="ir.actions.act_window">
+        <field name="name">Tasks</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref='task_graph'/>
+    </record>
+
+    <record id="dashboard_form_view" model="ir.ui.view">
+        <field name="name">Dashboard Form</field>
+        <field name="model">board.board</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Dashboard">
+                <board style="1-1-1">
+                    <column>
+                        <action
+                                string="Awards"
+                                name="%(award_graph_action)d"/>
+                        <action
+                                string="Strategic Goals"
+                                name="%(stgoal_graph_action)d"/>
+                    </column>
+
+                    <column>
+                        <action
+                                string="Operational Goals"
+                                name="%(opgoal_graph_action)d"/>
+
+                        <action
+                                string="Performance Indicators"
+                                name="%(indicator_graph_action)d"/>
+                    </column>
+                    <column>
+                        <action
+                                string="Projects"
+                                name="%(project_graph)d"/>
+
+                        <action
+                                string="Tasks"
+                                name="%(task_graph)d"/>
+                    </column>
+                </board>
+            </form>
+        </field>
+    </record>
+
+    <record id="dashboard_action" model="ir.actions.act_window">
+        <field name="name">Dashboard</field>
+        <field name="res_model">board.board</field>
+        <field name="view_model">form</field>
+        <field name="view_model">form</field>
+        <field name="view_id" ref="dashboard_form_view"></field>
+    </record>
+    <menuitem
+            id="dashboard_menu"
+            name="Dashboard"
+            parent="main_emp_assessment_menu"
+            action="dashboard_action"
+            sequence="17"/>
+</odoo>

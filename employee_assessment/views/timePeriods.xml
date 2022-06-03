@@ -1,0 +1,8 @@
+<odoo>
+    <data>
+        <menuitem id="menu_assessment_config" name="Configuration" parent="main_emp_assessment_menu" sequence="100"/>
+        <menuitem id="menu_assessment_date_ranges" name="Date Ranges" parent="menu_assessment_config" action="date_range.date_range_action" sequence="100"/>
+        <menuitem id="menu_assessment_date_range_types" name="Date Range Types" parent="menu_assessment_config" action="date_range.date_range_type_action" sequence="100"/>
+        <menuitem id="menu_assessment_date_range_generate" name="Generate Date Ranges" parent="menu_assessment_config" action="date_range.date_range_generator_action" sequence="100"/>
+    </data>
+</odoo>

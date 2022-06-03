@@ -1,0 +1,246 @@
+<odoo>
+    <data>
+
+        <record id="get_stgoal_form_action" model="ir.actions.act_window">
+            <field name="name">get_stgoal_form</field>
+            <field name="res_model">assessment.stgoal</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="award_form"></field>
+        </record>
+
+        <record id="stgoal_comment_list_action2" model="ir.actions.act_window">
+            <field name="res_model">assessment.stgoalcomment</field>
+            <field name="view_type">form</field>
+            <field name="name">Comments</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'default_strategicGoal': active_id, 'search_default_strategicGoal': [active_id]}</field>
+        </record>
+
+        <record id="operational_goal_list_action2" model="ir.actions.act_window">
+            <field name="res_model">assessment.opgoal</field>
+            <field name="view_type">form</field>
+            <field name="name">Operational Goals</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{'default_relatedStrategicGoal': active_id, 'search_default_relatedStrategicGoal': [active_id]}</field>
+        </record>
+
+        <record id="strategic_goal_form" model="ir.ui.view">
+            <field name="name">strategic_goal_form</field>
+            <field name="model">assessment.stgoal</field>
+            <field name="arch" type="xml">
+                <form string="Strategic Goals">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" groups="hr.group_hr_user"
+                                    class="oe_stat_button" icon="fa-archive">
+                                <field name="strategicGoalActive" widget="boolean_button"
+                                       options='{"terminology": "archive"}'/>
+                            </button>
+                            <button name="%(operational_goal_list_action2)d" type="action" groups="hr.group_hr_user"
+                                    class="oe_stat_button" icon="fa-bullseye">
+                                <field name="opgoal_count" string="Goals" widget="statinfo"/>
+                            </button>
+
+                        </div>
+                        <div class="oe_title">
+                            <h4><field name="seq" class="oe_inline" readonly="1"/></h4>
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="Strategic Goal's Name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="relatedAward" string="Award"/>
+                                <field name="strategicGoalImportance" string="Importance"/>
+                                <field name="strategicGoalDepartment" string="Department"/>
+                            </group>
+                            <group>
+                                <field name="create_uid" string="Created by" readonly="1"/>
+                                <field name="date_to" string="Deadline"/>
+                                <field name="strategicGoalResponsibleEmployee" string="Manager"/>
+                            </group>
+                            <group>
+                                <field name="progress" widget="progressbar" string="Progress"/>
+                            </group>
+                        </group>
+                        <notebook colspan="4">
+                            <page string="Description">
+                                <group>
+                                    <field name="strategicGoalDescription" string="Description" colspan="4"/>
+                                </group>
+                            </page>
+                            <page string="Degree Of Correlation">
+                                <field name="strategicRelations">
+                                    <tree editable="bottom">
+                                        <field name="name"/>
+                                        <field name="strategicalRelationDescription"/>
+                                        <field name="strategicalRelationDegree"/>
+                                        <field name="related_operational_goal" invisible="1"/>
+                                        <field name="related_strategical_goal" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Success Factors">
+                                <field name="successFactors">
+                                    <tree editable="bottom">
+                                        <field name="name"/>
+                                        <field name="related_strategical_goal" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Risks">
+                                <field name="risks">
+                                    <tree editable="bottom">
+                                        <field name="name"/>
+                                        <field name="description"/>
+                                        <field name="risk_degree"/>
+                                        <field name="risk_potential"/>
+                                        <field name="risk_priority"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="Comments" string="Comments">
+                                <field name="comments">
+                                    <tree editable="bottom">
+                                        <field name="name" string="Name"/>
+                                        <field name="comment_body" string="Description"/>
+                                        <field name="comment_date" string="Date"/>
+                                        <field name="create_uid" string="Created by" readonly="1"/>
+                                        <field name="done" string="Done"/>
+                                        <button name="%(enhancement_task_action)d" type="action" icon="fa-plus-circle" help="Create a new enhancement task"></button>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="strategic_goal_kanban">
+            <field name="name">strategic_goal_kanban</field>
+            <field name="model">assessment.stgoal</field>
+            <field name="arch" type="xml">
+                <kanban class="o_assessment_kanban_view">
+                    <field name="name"/>
+                    <field name="seq"/>
+                    <field name="date_to"/>
+                    <field name="relatedAward"/>
+                    <field name="strategicGoalDepartment"/>
+                    <field name="strategicGoalResponsibleEmployee"/>
+                    <field name="strategicGoalImportance"/>
+                    <field name="opgoal_count"/>
+                    <field name="comment_count"/>
+                    <field name="color"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
+                                <div class="o_event_left">Expires on:
+                                    <div class="o_day"><t t-esc="record.date_to.raw_value.getDate()"/></div>
+                                    <div>
+                                        <t t-esc="moment(record.date_to.raw_value).format('MMM')"/>
+                                        <t t-esc="record.date_to.raw_value.getFullYear()"/>
+                                    </div>
+                                    <div><t t-esc="moment(record.date_to.raw_value).format('LT')"/></div>
+                                </div>
+                                <div class="o_event_right">
+                                    <h4><field name="seq"/></h4>
+                                    <h2><field name="name"/></h2>
+                                    <b><field name="relatedAward"/></b> <br/>
+                                    <b><field name="strategicGoalDepartment"/></b> <br/>
+                                    <b><field name="strategicGoalResponsibleEmployee"/></b> <br/>
+                                    <p>
+                                        <a name="%(operational_goal_list_action2)d" type="action">
+                                            <t t-esc="record.opgoal_count.raw_value"> <i class="fa fa-bullseye"/>    </t>
+                                        </a>
+                                        <a name="%(stgoal_comment_list_action2)d" type="action">
+                                            <t t-esc="record.comment_count.raw_value"> <i class="fa fa-comments"/></t>
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+        <record id="strategic_goal_tree" model="ir.ui.view">
+            <field name="name">strategic_goal_tree</field>
+            <field name="model">assessment.stgoal</field>
+            <field name="arch" type="xml">
+                <tree string="Strategic Goals">
+                    <field name="seq" string="Sequence"/>
+                    <field name="name"/>
+                    <field name="strategicGoalDepartment"/>
+                    <field name="strategicGoalResponsibleEmployee"/>
+                    <field name="date_to" string="Deadline"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_assessment_stgoal_pivot" model="ir.ui.view">
+            <field name="name">assessment_stgoal_pivot</field>
+            <field name="model">assessment.stgoal</field>
+            <field name="arch" type="xml">
+                <pivot string="Strategic Goals">
+                    <field name="progress" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="stgoal_graph">
+            <field name="name">stgoal graph</field>
+            <field name="model">assessment.stgoal</field>
+            <field name="arch" type="xml">
+                <graph string="Strategic Goals">
+                    <field name="name"></field>
+                    <field name="progress" type="measure"></field>
+                </graph>
+            </field>
+        </record>
+
+        <record id="strategic_goal_search" model="ir.ui.view">
+            <field name="name">strategic_goal_search</field>
+            <field name="model">assessment.stgoal</field>
+            <field name="arch" type="xml">
+                <search string="Strategic Goals">
+                    <field name="name" string="Strategic Goals' Names" filter_domain="['|',('name','ilike',self),('name','ilike',self)]"/>
+                    <field name="relatedAward" string="Awards" filter_domain="['|',('relatedAward','ilike',self),('relatedAward','ilike',self)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Department" domain="[]" context="{'group_by':'strategicGoalDepartment'}"/>
+                        <filter string="Responsible Employee" domain="[]" context="{'group_by':'strategicGoalResponsibleEmployee'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="strategic_goal_list_action" model="ir.actions.act_window">
+            <field name="name">Strategic Goals</field>
+            <field name="res_model">assessment.stgoal</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form,pivot,graph</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add a new strategic goal.
+                </p>
+            </field>
+        </record>
+
+        <record id="stgoal_seq" model="ir.sequence">
+            <field name="name">Strategic Goal Sequence</field>
+            <field name="code">assessment.stgoal.seq</field>
+            <field name="prefix">/ST.G-</field>
+            <field name="implementation">no_gap</field>
+        </record>
+
+        <menuitem id="strategic_goal_big_menu" name="Strategic Goals" parent="main_emp_assessment_menu" sequence="12"/>
+        <menuitem id="strategic_goal_menu" name="Strategic Goals" parent="strategic_goal_big_menu" action="strategic_goal_list_action"/>
+
+    </data>
+</odoo>

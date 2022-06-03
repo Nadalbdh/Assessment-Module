@@ -1,0 +1,268 @@
+<odoo>
+    <data>
+
+        <record id="indicator_list_action2" model="ir.actions.act_window">
+            <field name="name">Performance Indicators</field>
+            <field name="res_model">assessment.indicator</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{'default_operationalGoal': active_id, 'search_default_operationalGoal': [active_id]}</field>
+        </record>
+
+        <record id="opgoal_comment_list_action" model="ir.actions.act_window">
+            <field name="name">Comments</field>
+            <field name="res_model">assessment.opgoalcomment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add a new comment.
+                </p>
+            </field>
+        </record>
+
+        <record id="operational_goal_list_action" model="ir.actions.act_window">
+            <field name="name">Operational Goals</field>
+            <field name="res_model">assessment.opgoal</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add a new operational goal.
+                </p>
+            </field>
+        </record>
+
+        <record id="open_view_project_all2" model="ir.actions.act_window">
+            <field name="res_model">project.project</field>
+            <field name="view_type">form</field>
+            <field name="name">Projects</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="context">{'default_relatedOperationalGoal': active_id, 'search_default_relatedOperationalGoal': [active_id]}</field>
+        </record>
+
+        <record id="operational_goal_form" model="ir.ui.view">
+            <field name="name">operational_goal_form</field>
+            <field name="model">assessment.opgoal</field>
+            <field name="arch" type="xml">
+                <form string="Operational Goals">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" groups="hr.group_hr_user"
+                                    class="oe_stat_button" icon="fa-archive">
+                                <field name="operationalGoalActive" widget="boolean_button"
+                                       options='{"terminology": "archive"}'/>
+                            </button>
+                            <button name="%(open_view_project_all2)d" type="action" groups="hr.group_hr_user"
+                                    class="oe_stat_button" icon="fa-list" >
+                                <field name="project_count" string="Projects" widget="statinfo"/>
+                            </button>
+                            <button name="%(indicator_list_action2)d" type="action" groups="hr.group_hr_user"
+                                    class="oe_stat_button" icon="fa-indent">
+                                <field name="indicator_count" string="Indicators" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h4><field name="seq" class="oe_inline" readonly="1"/></h4>
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="Operational Goal's Name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="relatedStrategicGoal" string="Strategic Goal"/>
+                                <field name="operationalGoalDepartment" string="Department"/>
+                            </group>
+                            <group>
+                                <field name="create_uid" string="Created by" readonly="1"/>
+                                <field name="operationalGoalResponsibleEmployee" string="Responsible Employee"/>
+                                <field name="progress" widget="progressbar" string="Progress"/>
+                            </group>
+                            <group string="Duration">
+                                <field name="date_from" string="From"/>
+                                <field name="date_to" string="To"/>
+                            </group>
+                            <group string="Budget">
+                                <field name="budget"/>
+                                <field name="currency_id"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <group>
+                                    <field name="operationalGoalDescription" string="Description" colspan="4"/>
+                                </group>
+                            </page>
+                            <page string="Degree of Correlation">
+                                <field name="strategicRelations">
+                                    <tree editable="bottom">
+                                        <field name="name"/>
+                                        <field name="strategicalRelationDescription"/>
+                                        <field name="strategicalRelationDegree"/>
+                                        <field name="related_strategical_goal" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Risks">
+                                <field name="risks">
+                                    <tree editable="bottom">
+                                        <field name="name"/>
+                                        <field name="description"/>
+                                        <field name="risk_degree"/>
+                                        <field name="risk_potential"/>
+                                        <field name="risk_priority"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="Comments" string="Comments">
+                                <field name="comments">
+                                    <tree editable="bottom">
+                                        <field name="name" string="Name"/>
+                                        <field name="comment_body" string="Description"/>
+                                        <field name="comment_date" string="Date"/>
+                                        <field name="create_uid" string="Created by" readonly="1"/>
+                                        <field name="done" string="Done"/>
+                                        <button name="%(enhancement_task_action)d" type="action" icon="fa-plus-circle" help="Create a new enhancement task"></button>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="operational_goal_kanban">
+            <field name="name">operational_goal_kanban</field>
+            <field name="model">assessment.opgoal</field>
+            <field name="arch" type="xml">
+                <kanban class="o_assessment_kanban_view">
+                    <field name="name"/>
+                    <field name="seq"/>
+                    <field name="date_to"/>
+                    <field name="relatedStrategicGoal"/>
+                    <field name="operationalGoalDepartment"/>
+                    <field name="operationalGoalResponsibleEmployee"/>
+                    <field name="operationalGoalImportance"/>
+                    <field name="project_count"/>
+                    <field name="comment_count"/>
+                    <field name="indicator_count"/>a
+                    <field name="color"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
+                                <div class="o_event_left">Expires on:
+                                    <div class="o_day"><t t-esc="record.date_to.raw_value.getDate()"/></div>
+                                    <div>
+                                        <t t-esc="moment(record.date_to.raw_value).format('MMM')"/>
+                                        <t t-esc="record.date_to.raw_value.getFullYear()"/>
+                                    </div>
+                                    <div><t t-esc="moment(record.date_to.raw_value).format('LT')"/></div>
+                                </div>
+                                <div class="o_event_right">
+                                    <h4><field name="seq"/></h4>
+                                    <h2><field name="name"/></h2>
+                                    <b><field name="relatedStrategicGoal"/></b> <br/>
+                                    <b><field name="operationalGoalDepartment"/></b> <br/>
+                                    <b><field name="operationalGoalResponsibleEmployee"/></b> <br/>
+                                    <p>
+                                        <a name="%(open_view_project_all2)d" type="action">
+                                            <t t-esc="record.project_count.raw_value"> <i class="fa fa-list"/></t>
+                                        </a>
+                                        <a name="%(opgoal_comment_list_action)d" type="action">
+                                            <t t-esc="record.comment_count.raw_value">  <i class="fa fa-comments"/></t>
+                                        </a>
+                                        <a name="%(indicator_list_action2)d" type="action">
+                                            <t t-esc="record.indicator_count.raw_value"> <i class="fa fa-indent"/></t>
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+
+        <record id="operational_goal_tree" model="ir.ui.view">
+            <field name="name">operational_goal_tree</field>
+            <field name="model">assessment.opgoal</field>
+            <field name="arch" type="xml">
+                <tree string="Operational Goals">
+                    <field name="seq" string="Sequence"/>
+                    <field name="name"/>
+                    <field name="operationalGoalDepartment"/>
+                    <field name="operationalGoalResponsibleEmployee"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="opgoal_graph">
+            <field name="name">opgoal graph</field>
+            <field name="model">assessment.opgoal</field>
+            <field name="arch" type="xml">
+                <graph string="Operational Goals">
+                    <field name="name"></field>
+                    <field name="progress" type="measure"></field>
+                </graph>
+            </field>
+        </record>
+
+        <record id="view_assessment_opgoal_pivot" model="ir.ui.view">
+            <field name="name">assessment_opgoal_pivot</field>
+            <field name="model">assessment.opgoal</field>
+            <field name="arch" type="xml">
+                <pivot string="Operational Goals Analysis" display_quantity="true" disable_linking="True">
+                    <field name="progress" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="operational_goal_search" model="ir.ui.view">
+            <field name="name">operational_goal_search</field>
+            <field name="model">assessment.opgoal</field>
+            <field name="arch" type="xml">
+                <search string="Operational Goals">
+                    <field name="name" string="Operational Goals' Names" filter_domain="['|',('name','ilike',self),('name','ilike',self)]"/>
+                    <field name="relatedStrategicGoal" string="Strategic Goals" filter_domain="['|',('relatedStrategicGoal','ilike',self),('relatedStrategicGoal','ilike',self)]"/>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="operational_goal_list_action" model="ir.actions.act_window">
+            <field name="name">Operational Goals</field>
+            <field name="res_model">assessment.opgoal</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form,pivot,graph</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="search_view_id" ref="operational_goal_search"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add a new operational goal.
+                </p>
+            </field>
+        </record>
+
+        <record id="opgoal_seq" model="ir.sequence">
+            <field name="name">Operational Goal Sequence</field>
+            <field name="code">assessment.opgoal.seq</field>
+            <field name="prefix">/OP.G-</field>
+            <field name="implementation">no_gap</field>
+        </record>
+        <menuitem id="operational_goal_big_menu" name="Operational Goals" parent="main_emp_assessment_menu" sequence="13"/>
+        <menuitem id="operational_goal_menu" name="Operational Goals" parent="operational_goal_big_menu" action="operational_goal_list_action"/>
+        <menuitem id="projects_big_menu" name="Projects" parent="main_emp_assessment_menu" sequence="15"/>
+        <menuitem id="projects_menu" name="Projects" parent="projects_big_menu" action="open_view_project_all3"/>
+
+    </data>
+</odoo>

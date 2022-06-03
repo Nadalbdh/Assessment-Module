@@ -1,0 +1,188 @@
+<odoo>
+    <data>
+        <menuitem id="main_emp_assessment_menu" name="Assessment" sequence="2"/>
+
+        <record id="open_view_project_all3" model="ir.actions.act_window">
+            <field name="name">Projects</field>
+            <field name="res_model">project.project</field>
+            <field name="view_type">form</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">kanban,tree,form,pivot,graph</field>
+            <field name="search_view_id" ref="project.view_project_project_filter"/>
+            <field name="target">main</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create a new project.<br/>
+                </p>
+            </field>
+        </record>
+
+        <!-- Project inherited form view-->
+        <record id="project_form_inherited" model="ir.ui.view">
+            <field name="name">project_form_inherited</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/notebook/page[1]/group[1]/field[@name='user_id']" position="before">
+                    <field name="relatedOperationalGoal" string="Operational Goal"/>
+                </xpath>
+                <xpath expr="//form/sheet/div[2]" position="after">
+                    <field name="progress" widget="progressbar" string="Progress"/>
+                </xpath>
+                <xpath expr="//form/sheet/notebook/page[@name='settings']" position="after">
+                    <page name="Comments" string="Comments">
+                        <field name="comments">
+                            <tree editable="bottom">
+                                <field name="name" string="Name"/>
+                                <field name="comment_body" string="Description"/>
+                                <field name="comment_date" string="Date"/>
+                                <field name="done" string="Done"/>
+                                <button name="%(open_view_project_all3)d" type="action" icon="fa-plus-circle"></button>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+                <xpath expr="//form/sheet/notebook/page[@name='settings']" position="before">
+                    <page string="Risks">
+                        <field name="dangers">
+                            <tree editable="bottom">
+                                <field name="name"/>
+                                <field name="description"/>
+                                <field name="risk_degree"/>
+                                <field name="risk_potential"/>
+                                <field name="risk_priority"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Project inherited simplified form view-->
+        <record id="project_inherit_simplified_form" model="ir.ui.view">
+            <field name="name">project_simplified_form_inherited</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.project_project_view_form_simplified"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/group/group[1]/field[@name='name']" position="after">
+                    <field name="relatedOperationalGoal" string="Operational Goal"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Project inherited search view-->
+        <record id="project_inherit_search" model="ir.ui.view">
+            <field name="name">project_search_inherited</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.view_project_project_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                    <field name="relatedOperationalGoal" string="Operational Goals"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="project_seq" model="ir.sequence">
+            <field name="name">Project Sequence</field>
+            <field name="code">project.project.seq</field>
+            <field name="prefix">/P-</field>
+            <field name="implementation">no_gap</field>
+        </record>
+
+        <record id="project_pivot" model="ir.ui.view">
+            <field name="name">assessment_project_pivot</field>
+            <field name="model">project.project</field>
+            <field name="arch" type="xml">
+                <pivot string="Projects">
+                    <field name="progress" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="project_graph">
+            <field name="name">project graph</field>
+            <field name="model">project.project</field>
+            <field name="arch" type="xml">
+                <graph string="Projects">
+                    <field name="progress" type="measure"></field>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Task inherited form view -->
+
+        <record id="task_form_inherited" model="ir.ui.view">
+            <field name="name">task_form_inherited</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet//group[1]/group[1]/field[@name='user_id']" position="after">
+                    <field name="task_type" string="Task Type"/>
+                </xpath>
+                <xpath expr="//form/sheet/notebook" position="inside">
+                    <page name="Comments" string="Comments">
+                        <field name="comments">
+                            <tree editable="bottom">
+                                <field name="name" string="Name"/>
+                                <field name="comment_body" string="Description"/>
+                                <field name="comment_date" string="Date"/>
+                                <field name="done" string="Done"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- ENHANCEMENT TASK ACTION -->
+
+        <record id="enhancement_task_action" model="ir.actions.act_window">
+            <field name="name">Enhancement Task</field>
+            <field name="res_model">project.task</field>
+            <field name="view_type">form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'default_task_type': 'enhancement'}</field>
+        </record>
+
+        <record id="task_pivot" model="ir.ui.view">
+            <field name="name">assessment_task_pivot</field>
+            <field name="model">project.task</field>
+            <field name="arch" type="xml">
+                <pivot string="Tasks">
+                    <field name="progress" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="task_graph">
+            <field name="name">task graph</field>
+            <field name="model">project.task</field>
+            <field name="arch" type="xml">
+                <graph string="Tasks">
+                    <field name="name"></field>
+                    <field name="progress" type="measure"></field>
+                </graph>
+            </field>
+        </record>
+
+        <record id="task_action" model="ir.actions.act_window">
+            <field name="name">Projects</field>
+            <field name="res_model">project.task</field>
+            <field name="view_type">form</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">kanban,tree,form,pivot,graph</field>
+            <field name="search_view_id" ref="project.view_task_form2"/>
+            <field name="target">main</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create a new task.<br/>
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="tasks_big_menu" name="Tasks" parent="main_emp_assessment_menu" sequence="16"/>
+        <menuitem id="tasks_menu" name="Tasks" parent="tasks_big_menu" action="task_action"/>
+
+
+    </data>
+</odoo>

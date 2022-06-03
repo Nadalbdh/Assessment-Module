@@ -1,0 +1,144 @@
+<odoo>
+    <data>
+        <record id="assessor_form" model="ir.ui.view">
+            <field name="name">assessor_form</field>
+            <field name="model">assessment.assessor</field>
+            <field name="arch" type="xml">
+                <form string="Assessors">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" groups="hr.group_hr_user"
+                                    class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button"
+                                       options='{"terminology": "archive"}'/>
+                            </button>
+                            <button name="action_get_attachment_tree_view"
+                                    class="oe_stat_button"
+                                    icon="fa-book"
+                                    type="object"
+                                    string="Attached Resume">
+                                <!--                        <field name="attachment_number" widget="statinfo" string="CV"/>-->
+                            </button>
+                        </div>
+                        <field name="image" widget='image' class="oe_avatar" options='{"preview_image":"image_medium"}'/>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="Assessor's Name"/>
+                            </h1>
+                        </div>
+                        <notebook>
+                            <page name="public" string="Public Information">
+                                <group>
+                                    <group string="Contact Information">
+                                        <field name="address_id"
+                                               context="{'show_address': 1}"
+                                               options='{"always_reload": True, "highlight_first_line": True}'/>
+                                        <field name="mobile_phone"/>
+                                        <field name="work_location"/>
+                                        <field name="work_email" widget="email"/>
+                                        <field name="work_phone"/>
+                                    </group>
+                                </group>
+                                <field name="notes" placeholder="Other Information ..." colspan="4"/>
+                            </page>
+                            <page name="personal_information" string="Personal Information" groups="hr.group_hr_user">
+                                <group>
+                                    <group string="Citizenship &amp; Other Information">
+                                        <field name="country_id" options='{"no_open": True, "no_create": True}'/>
+                                    </group>
+                                    <group string="Contact Information">
+                                        <field name="address_home_id"
+                                               context="{'show_address': 1}"
+                                               options='{"always_reload": True, "highlight_first_line": True}'/>
+                                    </group>
+                                    <group string="Status">
+                                        <field name="gender"/>
+                                        <field name="marital"/>
+                                    </group>
+                                    <group string="Birth">
+                                        <field name="birthday"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Experience">
+                                <group tring="Previous Experience" colspan="4">
+                                    <field name="past_experience" string="Experience">
+                                        <tree editable="bottom">
+                                            <field name="name" string="Place of Work"/>
+                                            <field name="experience_start" string="From"/>
+                                            <field name="experience_end" string="To"/>
+                                            <field name="related_assessor" invisible="1"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                                <group tring="Domains of Interest" colspan="4">
+                                    <field name="interest_domains" string="Interest Domains">
+                                        <tree editable="bottom">
+                                            <field name="name" string="Domain"/>
+                                            <field name="related_assessor" invisible="1"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page name="hr_settings" string="HR Settings" groups="hr.group_hr_user">
+                                <group>
+                                    <group string='Status' name="active_group">
+                                        <field name="company_id" groups="base.group_multi_company"/>
+                                        <field name="user_id" string="Related User"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="assessor_tree" model="ir.ui.view">
+            <field name="name">assessorTree</field>
+            <field name="model">assessment.assessor</field>
+            <field name="arch" type="xml">
+                <tree string="Assessors">
+                    <field name="name"/>
+                    <field name="work_email"/>
+                    <field name="interest_domains"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="assessor_search" model="ir.ui.view">
+            <field name="name">assessor_search</field>
+            <field name="model">assessment.assessor</field>
+            <field name="arch" type="xml">
+                <search string="Assessors">
+                    <field name="name" string="Assessors" filter_domain="['|',('work_email','ilike',self),('name','ilike',self)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Domains" domain="[]" context="{'group_by':'interest_domains'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="assessor_list_action" model="ir.actions.act_window">
+            <field name="name">Assessors</field>
+            <field name="res_model">assessment.assessor</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="search_view_id" ref="assessor_search"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add a new assessor.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="assessors_menu" name="Assessors" parent="main_emp_assessment_menu" action="assessor_list_action" sequence="18"/>
+    </data>
+</odoo>

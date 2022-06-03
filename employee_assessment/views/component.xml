@@ -1,0 +1,80 @@
+<odoo>
+    <data>
+
+        <record id="measure_component_list_action" model="ir.actions.act_window">
+            <field name="name">Measure Components</field>
+            <field name="res_model">assessment.measure</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add a new measure component.
+                </p>
+            </field>
+        </record>
+
+        <record id="measure_component_form" model="ir.ui.view">
+            <field name="name">component_form</field>
+            <field name="model">assessment.measure</field>
+            <field name="arch" type="xml">
+                <form string="Measure Components">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_get_attachment_tree_view"
+                                    class="oe_stat_button"
+                                    icon="fa-book"
+                                    type="object">
+                                <field name="attachment_number" widget="statinfo" string="Attachments"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="Component's Name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="indicator_id" string="Indicator"/>
+                            <field name="year" string="Year"/>
+                            <field name="progress" widget="progressbar"/>
+                        </group>
+                        <field name="quarters">
+                            <tree editable="bottom">
+                                <field name="range"/>
+                                <field name="parent_id"/>
+                                <field name="type_id"/>
+                                <field name="past_range" string="Past Range" help="Please check this button to verify the quarter"/>
+                                <field name="expected_value"/>
+                                <field name="value_real" attrs="{'readonly': [('past_range', '=', False)]}"/>
+                            </tree>
+                        </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="measure_component_tree" model="ir.ui.view">
+            <field name="name">component_tree</field>
+            <field name="model">assessment.measure</field>
+            <field name="arch" type="xml">
+                <tree string="Measure Components">
+                    <field name="name" string="Name"/>
+                    <field name="year" string="Year"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="measure_component_search" model="ir.ui.view">
+            <field name="name">measure_component_search</field>
+            <field name="model">assessment.measure</field>
+            <field name="arch" type="xml">
+                <search string="Measure Components">
+                    <field name="name" string="Measure Component's Name" filter_domain="['|',('name','ilike',self),('name','ilike',self)]"/>
+                    <field name="indicator_id" string="Performance Indicators" filter_domain="['|',('indicator_id','ilike',self),('indicator_id','ilike',self)]"/>
+                    <filter string="Year" name = "group_by_year" context = "{'group_by': 'year'}" />
+                </search>
+            </field>
+        </record>
+
+    </data>
+</odoo>

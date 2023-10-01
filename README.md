@@ -1,7 +1,8 @@
 # Odoo Award Planning and Management Module
 
 The Odoo Assessment Module is a comprehensive solution designed to help businesses set long-term objectives and effectively plan, manage, and track their efforts towards winning awards and achieving recognition. This module provides the tools and functionalities needed to streamline the award planning process, enhance collaboration, and utilize data analysis for better decision-making.
-[Report Link](https://drive.google.com/file/d/1jjrfU2M7bSajAEHHvCWX1nZ7qtOQEu0N/view?usp=sharing)
+
+[Project Thesis Link](https://drive.google.com/file/d/1jjrfU2M7bSajAEHHvCWX1nZ7qtOQEu0N/view?usp=sharing)
 
 ## Table of Contents
 
